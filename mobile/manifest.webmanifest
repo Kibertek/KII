@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "KII · Персональный ассистент",
+  "short_name": "KII",
+  "description": "Мобильный клиент персонального ассистента KII",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101113",
+  "theme_color": "#111214",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

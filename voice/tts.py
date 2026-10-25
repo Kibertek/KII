@@ -58,8 +58,9 @@ class TTSEngine:
 
         if self._piper_installed and self._piper_model:
             print(f"[KII] Локальный нейросетевой голос Piper: {self._piper_model.name}")
-            return
 
+        # Инициализируем резервный движок даже при наличии Piper:
+        # если синтез или воспроизведение WAV не сработает, останется системный TTS.
         self._init_system_voice()
 
         if not self._piper_model:

@@ -5,7 +5,7 @@ from core.narrator import Narrator
 
 
 class KII:
-    """Минимальное ядро KII для локального запуска."""
+    """Локальное ядро KII для запуска из консоли."""
 
     def __init__(self) -> None:
         self.narrator = Narrator()
@@ -31,4 +31,4 @@ class KII:
                 break
 
             result = self.actions.handle(command)
-            print(f"KII: {result}")
+            print(result)

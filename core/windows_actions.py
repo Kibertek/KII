@@ -22,7 +22,6 @@ class WindowsActions:
         "explorer": ["explorer.exe"],
         "paint": ["mspaint.exe"],
         "паинт": ["mspaint.exe"],
-        "paint": ["mspaint.exe"],
     }
 
     def launch_program(self, name: str) -> str:

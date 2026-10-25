@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111214">
+  <meta name="description" content="Мобильный интерфейс персонального ассистента KII">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>KII · Ассистент</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="KII, главная">
+        <span class="brand-mark">K</span>
+        <span class="brand-copy"><strong>KII</strong><small>PERSONAL ASSISTANT</small></span>
+      </a>
+      <div class="top-actions">
+        <span id="connection-indicator" class="connection"><i></i><span>Не подключён</span></span>
+        <button id="settings-open" class="icon-button" aria-label="Настройки подключения" title="Настройки подключения">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="m19.4 15 .1.1 1.4 1.1-1.5 2.6-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-3l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.5-2.6 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.5-2.6 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h3l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.5 2.6-1.4 1.1a7 7 0 0 1 0 2Z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-layout">
+      <aside class="side-panel">
+        <div class="section-label">РАБОЧЕЕ ПРОСТРАНСТВО</div>
+        <button class="nav-item active" type="button"><span class="nav-icon">✳</span><span>Диалог с KII</span><span class="nav-dot"></span></button>
+        <button class="nav-item" type="button" data-coming="Задачи"><span class="nav-icon">◷</span><span>Задачи</span><span class="soon">скоро</span></button>
+        <button class="nav-item" type="button" data-coming="Память"><span class="nav-icon">▤</span><span>Память</span><span class="soon">скоро</span></button>
+        <div class="side-note">
+          <span class="note-orb"></span>
+          <strong>Ядро KII</strong>
+          <p>Мобильный клиент готовится к подключению к серверу.</p>
+          <button id="side-settings" class="text-button" type="button">Настроить сервер <span>↗</span></button>
+        </div>
+        <div class="side-footer">KII MOBILE <span>0.1.0</span></div>
+      </aside>
+
+      <section class="chat-panel" aria-label="Диалог с KII">
+        <div class="chat-heading">
+          <div>
+            <div class="eyebrow"><span class="live-dot"></span> ПЕРСОНАЛЬНЫЙ АССИСТЕНТ</div>
+            <h1>На связи<span class="accent">.</span></h1>
+            <p>Один ассистент. Все твои устройства.</p>
+          </div>
+          <div class="avatar">K<span></span></div>
+        </div>
+
+        <div id="chat-messages" class="messages" aria-live="polite">
+          <article class="message assistant-message">
+            <div class="message-avatar">K</div>
+            <div class="message-content">
+              <div class="message-meta">KII <span>СИСТЕМА</span></div>
+              <div class="bubble">
+                Мобильный интерфейс запущен. Для настоящих ответов нужно подключить сервер KII в настройках. Пока я не буду изображать работающий ИИ, просто потому что кнопки выглядят убедительно.
+              </div>
+              <div class="message-time">Локальный интерфейс</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="quick-actions" aria-label="Быстрые команды">
+          <button type="button" data-prompt="Покажи системную информацию">⌘ Система</button>
+          <button type="button" data-prompt="Какие задачи запланированы?">◷ Задачи</button>
+          <button type="button" data-prompt="Помоги спланировать день">✳ Планирование</button>
+        </div>
+
+        <form id="chat-form" class="composer">
+          <label class="sr-only" for="message-input">Сообщение для KII</label>
+          <textarea id="message-input" rows="1" placeholder="Напиши сообщение KII…" maxlength="8000" required></textarea>
+          <div class="composer-bottom">
+            <span class="composer-hint"><span class="keyboard-icon">↵</span> Отправить сообщение</span>
+            <button id="send-button" class="send-button" type="submit" aria-label="Отправить сообщение">
+              <span>Отправить</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
+            </button>
+          </div>
+        </form>
+        <p class="privacy-note"><span>◆</span> История пока хранится только в этом браузере.</p>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="settings-dialog" class="settings-dialog">
+    <form id="settings-form" method="dialog">
+      <div class="dialog-heading">
+        <div><div class="eyebrow">ПОДКЛЮЧЕНИЕ</div><h2>Настройки сервера</h2></div>
+        <button type="button" id="settings-close" class="icon-button" aria-label="Закрыть">×</button>
+      </div>
+      <p class="dialog-copy">Укажи базовый адрес сервера, на котором будет работать API KII. Сам серверный API ещё нужно развернуть.</p>
+      <label for="server-url">Адрес сервера</label>
+      <input id="server-url" type="url" placeholder="https://kii.example.ru" autocomplete="url" inputmode="url">
+      <p class="field-help">Вводи адрес без <code>/api/v1/chat</code>. Для реального использования вне локальной сети нужен HTTPS.</p>
+      <div id="settings-error" class="form-error" role="alert"></div>
+      <div class="dialog-actions">
+        <button type="button" id="connection-test" class="secondary-button">Проверить связь</button>
+        <button type="submit" class="primary-button">Сохранить</button>
+      </div>
+      <p id="connection-result" class="connection-result" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>

@@ -108,6 +108,8 @@
   }
 
   function renderHistory() {
+    // Keep the welcome card from index.html for a brand-new local session.
+    if (messages.length === 0) return;
     messagesNode.replaceChildren();
     messages.forEach(renderMessage);
   }

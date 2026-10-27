@@ -3,6 +3,7 @@
 
   const STORAGE = {
     server: "kii.mobile.serverUrl",
+    apiKey: "kii.mobile.apiKey",
     messages: "kii.mobile.messages.v1",
     session: "kii.mobile.sessionId"
   };
@@ -16,6 +17,7 @@
   const settingsDialog = $("#settings-dialog");
   const settingsForm = $("#settings-form");
   const serverInput = $("#server-url");
+  const apiKeyInput = $("#api-key");
   const connectionIndicator = $("#connection-indicator");
   const connectionTest = $("#connection-test");
   const connectionResult = $("#connection-result");
@@ -125,6 +127,7 @@
 
   function openSettings() {
     serverInput.value = serverUrl();
+    apiKeyInput.value = localStorage.getItem(STORAGE.apiKey) || "";
     settingsError.textContent = "";
     connectionResult.textContent = "";
     settingsDialog.showModal();
@@ -137,14 +140,14 @@
     return parsed.toString().replace(/\/+$/, "");
   }
 
-  async function checkConnection(baseUrl, timeoutMs = 5000) {
+  async function checkConnection(baseUrl, apiKey = "", timeoutMs = 5000) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
       // Health endpoint is part of the planned API contract.
       const response = await fetch(baseUrl + "/health", {
         method: "GET",
-        headers: { "Accept": "application/json" },
+        headers: { "Accept": "application/json", ...(apiKey ? { "X-KII-API-Key": apiKey } : {}) },
         signal: controller.signal
       });
       if (!response.ok) throw new Error("Сервер ответил HTTP " + response.status + ".");
@@ -165,6 +168,7 @@
       const value = serverInput.value.trim();
       if (!value) {
         localStorage.removeItem(STORAGE.server);
+        localStorage.removeItem(STORAGE.apiKey);
         setConnection(false, "Не подключён");
         settingsDialog.close();
         showToast("Адрес сервера очищен.");
@@ -172,6 +176,8 @@
       }
       const normalized = normalizeServerUrl(value);
       localStorage.setItem(STORAGE.server, normalized);
+      if (apiKeyInput.value.trim()) localStorage.setItem(STORAGE.apiKey, apiKeyInput.value.trim());
+      else localStorage.removeItem(STORAGE.apiKey);
       setConnection(false, "Адрес сохранён");
       settingsDialog.close();
       showToast("Адрес сервера сохранён. Проверь связь перед отправкой сообщений.");
@@ -194,7 +200,7 @@
     connectionTest.disabled = true;
     connectionTest.textContent = "Проверяю…";
     try {
-      await checkConnection(baseUrl);
+      await checkConnection(baseUrl, apiKeyInput.value.trim());
       connectionResult.textContent = "Связь есть. Сервер отвечает на /health.";
       connectionResult.style.color = "var(--green)";
     } catch (error) {
@@ -229,7 +235,11 @@
     try {
       const response = await fetch(baseUrl + API_PATH, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          ...(localStorage.getItem(STORAGE.apiKey) ? { "X-KII-API-Key": localStorage.getItem(STORAGE.apiKey) } : {})
+        },
         body: JSON.stringify({ message: text, session_id: getSessionId(), client: "kii-mobile" }),
         signal: controller.signal
       });

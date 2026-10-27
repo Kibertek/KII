@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import hmac
 import os
-from typing import Literal
 
 import uvicorn
 from fastapi import Depends, FastAPI, Header, HTTPException
@@ -96,7 +95,7 @@ def main() -> None:
     if not 1 <= port <= 65535:
         raise SystemExit("KII_API_PORT должен быть в диапазоне 1–65535.")
 
-    if host in {"0.0.0.0", "::", "*"} and not API_TOKEN:
+    if host not in {"localhost", "127.0.0.1", "::1"} and not API_TOKEN:
         raise SystemExit(
             "Отказ запуска: для доступа не только с этого компьютера задай "
             "KII_API_TOKEN. Не выставляй API в сеть без аутентификации."

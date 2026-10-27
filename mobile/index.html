@@ -91,10 +91,13 @@
         <div><div class="eyebrow">ПОДКЛЮЧЕНИЕ</div><h2>Настройки сервера</h2></div>
         <button type="button" id="settings-close" class="icon-button" aria-label="Закрыть">×</button>
       </div>
-      <p class="dialog-copy">Укажи базовый адрес сервера, на котором будет работать API KII. Сам серверный API ещё нужно развернуть.</p>
+      <p class="dialog-copy">Укажи адрес запущенного API KII. Для защищённого подключения можно указать API-ключ, настроенный на сервере.</p>
       <label for="server-url">Адрес сервера</label>
       <input id="server-url" type="url" placeholder="https://kii.example.ru" autocomplete="url" inputmode="url">
-      <p class="field-help">Вводи адрес без <code>/api/v1/chat</code>. Для реального использования вне локальной сети нужен HTTPS.</p>
+      <p class="field-help">Вводи адрес без <code>/api/v1/chat</code>. Для доступа вне локальной сети используй HTTPS.</p>
+      <label for="api-key">API-ключ (если настроен на сервере)</label>
+      <input id="api-key" type="password" placeholder="Ключ доступа" autocomplete="off">
+      <p class="field-help">Ключ хранится в локальном хранилище этого браузера. Не сохраняй его на чужих устройствах.</p>
       <div id="settings-error" class="form-error" role="alert"></div>
       <div class="dialog-actions">
         <button type="button" id="connection-test" class="secondary-button">Проверить связь</button>
